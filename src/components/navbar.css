@@ -1,0 +1,29 @@
+*{
+    margin: 0;
+    padding: 0;
+    
+    box-sizing: border-box;
+}
+.navigation_items{
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    list-style-type: none;
+    padding: 16px;
+    background-color: antiquewhite;
+}
+.navigation_items a{
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+
+h1{
+    font-size: 40px;
+    text-align: center;
+    margin: 20px auto;
+}
+p{
+    font-size: 20px;
+    text-align: center;
+}
