@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import "./navbar.css"
 
 function User() {
   const [loading, setLoading] = useState(false);
@@ -17,8 +18,8 @@ function User() {
   const getUsers = async (val) => {
     setLoading(true);
     const api = await fetch(
-      //We use the params.page that we defined in the app.js to check the
-      //page the user is navigating to
+      //We use the params.page that we defined in the app.js to check whatever page
+      //the user is navigating to
       `https://randomuser.me/api/?page=${val}&results=12&seed=abc`
     );
     const data = await api.json();
@@ -51,30 +52,34 @@ function User() {
   console.log(users);
   return (
     <div>
-      <h1 className="user_header"> List of Users.</h1>
-      <ul className="card_container">
-        {users?.map((user, i) => (
-          <li key={i} className="user_card">
-            <img src={user.picture.medium} alt="" className="user_picture" />
-            <div>
-              <h4 className="username">
-                Name:{user.name.title} {user.name.first} {user.name.last}
-              </h4>
-              <h5 className="user_gender">Gender:{user.gender}</h5>
-              <h5 className="user_email">Email:{user.email}</h5>
-              <h5 className="user_phone">Phone:{user.phone}</h5>
-              <h5 className="user_age">Age:{user.dob.age}</h5>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <h1 className="user_header"> All Users.</h1>
+      <div className="container">
+        <ul className="card_container">
+          {users?.map((user, i) => (
+            <li key={i} className="user_card">
+              <div className="image-container">
+              <img src={user.picture.medium} alt="" className="user_picture" />
+              </div>
+              <div>
+                <h5 className="username">
+                  Name:<span  className="no1">{user.name.title} {user.name.first} {user.name.last}</span>
+                </h5>
+                <h5 className="user_gender">Gender:<span>{user.gender}</span></h5>
+                <h5 className="user_email">Email:<span className="no2">{user.email}</span></h5>
+                <h5 className="user_phone">Phone:<span className="no3">{user.phone}</span></h5>
+                <h5 className="user_age">Age:<span className="no4">{user.dob.age}</span></h5>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
 
       <div className="pagination_con">
         {/* create prev button */}
         <button onClick={() => subPage(+params.page)} className="prev">
-          Prev
+          Previous
         </button>
-        {/* Start a loop to generate ten buttons  */}
+        {/* Start a loop to create ten buttons  */}
         {[...Array(Math.round(users?.length + +params.page))].map((_, i) =>
           //display 1 - 10 initially and for numbers 1 - 5
           +params.page < 6 && i < 10 ? (
@@ -82,6 +87,7 @@ function User() {
               key={i}
               onClick={() => updatePage(i + 1)}
               className="page_numbers"
+              
             >
               {i + 1}
             </button>
