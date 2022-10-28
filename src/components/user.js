@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import "./navbar.css"
+import "./navbar.css";
+import ErrorBoundary from "./ErrorBoundary";
+import Error from "./error";
 
 function User() {
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
+  const [pageNum, setPageNum] = useState(0);
+  const [animation, setAnimation] = useState("card_container");
+
 
   const params = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
     getUsers(params.page);
+    setPageNum(params.page);
   }, [params.page]);
 
   console.log(params.page);
@@ -37,6 +43,10 @@ function User() {
     navigate(`/users/page/${val + 1}`);
     getUsers(val + 1);
   };
+ // For animation
+ const animationHandler = () => {
+  setAnimation("card_container animation_style");
+};
 
   //function to remove from the current page index
   const subPage = (val) => {
@@ -54,20 +64,35 @@ function User() {
     <div>
       <h1 className="user_header"> All Users.</h1>
       <div className="container">
-        <ul className="card_container">
+      <ul className={animation} onLoad={animationHandler}>
           {users?.map((user, i) => (
             <li key={i} className="user_card">
               <div className="image-container">
-              <img src={user.picture.medium} alt="" className="user_picture" />
+                <img
+                  src={user.picture.medium}
+                  alt=""
+                  className="user_picture"
+                />
               </div>
               <div>
                 <h5 className="username">
-                  Name:<span  className="no1">{user.name.title} {user.name.first} {user.name.last}</span>
+                  Name:
+                  <span className="no1">
+                    {user.name.title} {user.name.first} {user.name.last}
+                  </span>
                 </h5>
-                <h5 className="user_gender">Gender:<span>{user.gender}</span></h5>
-                <h5 className="user_email">Email:<span className="no2">{user.email}</span></h5>
-                <h5 className="user_phone">Phone:<span className="no3">{user.phone}</span></h5>
-                <h5 className="user_age">Age:<span className="no4">{user.dob.age}</span></h5>
+                <h5 className="user_gender">
+                  Gender:<span>{user.gender}</span>
+                </h5>
+                <h5 className="user_email">
+                  Email:<span className="no2">{user.email}</span>
+                </h5>
+                <h5 className="user_phone">
+                  Phone:<span className="no3">{user.phone}</span>
+                </h5>
+                <h5 className="user_age">
+                  Age:<span className="no4">{user.dob.age}</span>
+                </h5>
               </div>
             </li>
           ))}
@@ -86,8 +111,9 @@ function User() {
             <button
               key={i}
               onClick={() => updatePage(i + 1)}
-              className="page_numbers"
-              
+              className={`${
+                i + 1 === Number(pageNum) ? "blue" : ""
+              } page_numbers`}
             >
               {i + 1}
             </button>
@@ -96,7 +122,13 @@ function User() {
             //matter the index
             i >= +params.page - 6 &&
             i + 6 < +params.page + 10 && (
-              <button key={i} onClick={() => updatePage(i + 1)}>
+              <button
+                className={`${
+                  i + 1 === Number(pageNum) ? "blue" : ""
+                } page_numbers`}
+                key={i}
+                onClick={() => updatePage(i + 1)}
+              >
                 {i + 1}
               </button>
             )
@@ -107,6 +139,9 @@ function User() {
           Next
         </button>
       </div>
+      <ErrorBoundary>
+          <Error />
+        </ErrorBoundary>
     </div>
   );
 }

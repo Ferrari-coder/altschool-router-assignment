@@ -22,7 +22,7 @@ const NavBar = () => {
             <li>
               <NavLink
                 style={({ isActive }) =>
-                  isActive ? { color: "grey" } : { color: "purple" }
+                  isActive ? { color: "white" } : { color: "#1E34FF" }
                 }
                 to="/"
               >
@@ -32,7 +32,7 @@ const NavBar = () => {
             <li>
               <NavLink
                 style={({ isActive }) =>
-                  isActive ? { color: "grey" } : { color: "purple" }
+                  isActive ? { color: "white" } : { color: "#1E34FF" }
                 }
                 to="/users/page/1"
               >
